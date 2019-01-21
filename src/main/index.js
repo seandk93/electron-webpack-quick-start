@@ -52,7 +52,6 @@ autoUpdater.on('checking-for-update', () => {
 })
 autoUpdater.on('update-available', (info) => {
   sendStatusToWindow('Update available.');
-  sendStatusToWindow(info);
 })
 autoUpdater.on('update-not-available', (info) => {
   sendStatusToWindow('Update not available.');
@@ -68,6 +67,7 @@ autoUpdater.on('download-progress', (progressObj) => {
 })
 autoUpdater.on('update-downloaded', (info) => {
   sendStatusToWindow('Update downloaded');
+  sendStatusToWindow(info);
 });
 
 // quit application when all windows are closed
@@ -90,8 +90,7 @@ app.on('ready', () => {
   mainWindow = createMainWindow()
   autoUpdater.checkForUpdatesAndNotify()
 
-  // Test
-  // setTimeout(function(){
-  //   sendStatusToWindow('Test message');
-  // }, 5000);
+  setTimeout(function () {
+    sendStatusToWindow('Current version is: ' + autoUpdater.currentVersion.version);
+  }, 1000);
 })
