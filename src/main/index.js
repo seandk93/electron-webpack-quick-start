@@ -1,7 +1,6 @@
 'use strict'
 
 import { app, BrowserWindow, ipcMain } from 'electron'
-import { log } = from 'electron-log'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
 import { autoUpdater } from 'electron-updater'
@@ -9,43 +8,13 @@ import { autoUpdater } from 'electron-updater'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 //-------------------------------------------------------------------
-// Logging
-//-------------------------------------------------------------------\
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
-log.info('App starting...');
-
-//-------------------------------------------------------------------
 // Open a window that displays the version
 //-------------------------------------------------------------------
 let mainWindow
 
 function sendStatusToWindow(text) {
-  log.info(text);
   mainWindow.webContents.send('message', text);
 }
-
-autoUpdater.on('checking-for-update', () => {
-  sendStatusToWindow('Checking for update...');
-})
-autoUpdater.on('update-available', (info) => {
-  sendStatusToWindow('Update available.');
-})
-autoUpdater.on('update-not-available', (info) => {
-  sendStatusToWindow('Update not available.');
-})
-autoUpdater.on('error', (err) => {
-  sendStatusToWindow('Error in auto-updater. ' + err);
-})
-autoUpdater.on('download-progress', (progressObj) => {
-  let log_message = "Download speed: " + progressObj.bytesPerSecond;
-  log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
-  log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
-  sendStatusToWindow(log_message);
-})
-autoUpdater.on('update-downloaded', (info) => {
-  sendStatusToWindow('Update downloaded');
-});
 
 function createMainWindow() {
   const window = new BrowserWindow()
@@ -78,6 +47,29 @@ function createMainWindow() {
   return window
 }
 
+autoUpdater.on('checking-for-update', () => {
+  sendStatusToWindow('Checking for update...');
+})
+autoUpdater.on('update-available', (info) => {
+  sendStatusToWindow('Update available.');
+  sendStatusToWindow(info);
+})
+autoUpdater.on('update-not-available', (info) => {
+  sendStatusToWindow('Update not available.');
+})
+autoUpdater.on('error', (err) => {
+  sendStatusToWindow('Error in auto-updater. ' + err);
+})
+autoUpdater.on('download-progress', (progressObj) => {
+  let log_message = "Download speed: " + progressObj.bytesPerSecond;
+  log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+  log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+  sendStatusToWindow(log_message);
+})
+autoUpdater.on('update-downloaded', (info) => {
+  sendStatusToWindow('Update downloaded');
+});
+
 // quit application when all windows are closed
 app.on('window-all-closed', () => {
   // on macOS it is common for applications to stay open until the user explicitly quits
@@ -97,4 +89,9 @@ app.on('activate', () => {
 app.on('ready', () => {
   mainWindow = createMainWindow()
   autoUpdater.checkForUpdatesAndNotify()
+
+  // Test
+  // setTimeout(function(){
+  //   sendStatusToWindow('Test message');
+  // }, 5000);
 })

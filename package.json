@@ -7,7 +7,7 @@
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "release": "build -p always"
+    "release": "build --win -p always"
   },
   "dependencies": {
     "source-map-support": "^0.5.10"
@@ -29,8 +29,7 @@
       {
         "provider": "github",
         "repo": "electron-webpack-quick-start",
-        "host": "https://github.com/seandk93/electron-webpack-quick-start",
-        "ownder": "seandk93"
+        "owner": "seandk93"
       }
     ]
   }
