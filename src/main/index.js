@@ -92,5 +92,5 @@ app.on('ready', () => {
 
   setTimeout(function () {
     sendStatusToWindow('Current version is: ' + autoUpdater.currentVersion.version);
-  }, 1000);
+  }, 2000);
 })

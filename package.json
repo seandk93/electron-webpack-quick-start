@@ -5,9 +5,9 @@
   "scripts": {
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
-    "dist": "electron-builder",
+    "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "release": "electron-builder && build --win -p always"
+    "release": "yarn compile && build --win -p always"
   },
   "dependencies": {
     "source-map-support": "^0.5.10"
